@@ -1,0 +1,108 @@
+# Thumbnail Generator
+
+### Desarrollo y Metodología
+
+Este proyecto fue diseñado, estructurado y desplegado para resolver una necesidad operativa real. La implementación del código se realizó mediante **desarrollo asistido por IA** (GitHub Copilot), enfocando el esfuerzo principal en el diseño visual, la lógica de composición de la imagen, el ajuste automático de textos y la integración con OBS.
+
+> Generador de miniaturas para transmisiones en vivo de YouTube, con diseño automático según el día del servicio y exportación directa a OBS. *(Live-stream thumbnail generator for YouTube, with automatic layout per service day and direct export to OBS.)*
+
+## ¿Qué es?
+
+Una herramienta que nació de una necesidad real: cada semana hay que preparar una miniatura para la transmisión del servicio, con la fecha, el título de la predicación y el nombre del predicador. Esta aplicación genera la imagen en segundos, con el diseño que corresponde al día (miércoles o domingo), y la guarda en una ruta fija para que OBS la muestre de inmediato.
+
+## Características
+
+- **Interfaz sencilla** (tkinter): un campo para el título, un campo para el predicador y un botón para generar.
+- **Fecha automática** en español, con el formato `Miércoles 14 de Octubre 2026`, tomada de la fecha del sistema.
+- **Diseño según el día:** verde para miércoles, azul para domingo. Si se abre en otro día, usa el diseño de domingo y lo indica en pantalla.
+- **Título automático:** se escribe en mayúsculas, se busca el tamaño más grande que quepa en el área central y las líneas quedan equilibradas.
+- **Saltos de línea personalizados con coma:** escribe una coma donde quieras cortar el título y cada parte irá en su propia línea.
+- **Fondos y degradado independientes:** cada día tiene su imagen de fondo y su color, y el degradado se desvanece hacia arriba y hacia abajo.
+- **Exportación para OBS:** la imagen se guarda en `obs_output/miniatura_actual.png` de forma atómica, así OBS nunca lee un archivo a medio escribir.
+
+## Cómo escribir el título
+
+El título se convierte a mayúsculas automáticamente. Las comas sirven para forzar saltos de línea:
+
+| Lo que escribes | Resultado en la miniatura |
+|---|---|
+| `Apocalipsis de Habacuc` | Ajuste automático, sin cortes manuales |
+| `Apocalipsis, de Habacuc` | **APOCALIPSIS** / **DE HABACUC** |
+| `Lo que Dios hace, con su pueblo, en tiempos difíciles` | Una línea por cada coma |
+
+Las comas no aparecen en la imagen final. Si no escribes ninguna, el programa decide los saltos solo.
+
+## Arquitectura
+
+```text
+ Interfaz (tkinter)  ──►  Composición (Pillow)  ──►  obs_output/miniatura_actual.png  ──►  OBS
+        │                        │
+        │                        ├── backgrounds/   (fondo por día)
+        │                        └── fonts/         (tipografías)
+        └── Día y fecha detectados del sistema
+```
+
+Decisiones de diseño que vale la pena destacar:
+
+- **Diseño por día:** la fecha decide el fondo, el color del degradado y el formato del texto, sin intervención manual.
+- **Escritura atómica:** el archivo se guarda primero con un nombre temporal y luego reemplaza al anterior. OBS siempre muestra una imagen completa.
+- **Ajuste de texto por búsqueda:** en lugar de fórmulas fijas, el programa prueba tamaños de mayor a menor hasta encontrar el que cabe en el espacio disponible.
+- **Fuentes de respaldo:** si no encuentra las tipografías en `fonts/`, usa las del sistema para no detener la generación.
+
+## Tecnologías
+
+Python 3 · Pillow · tkinter
+
+## Requisitos
+
+- Python 3.9 o superior.
+- Pillow.
+- Fondos en `.jpg` o `.png` para cada día.
+- Tipografías en `.ttf` u `.otf` (opcional, ver más abajo).
+
+## Instalación
+
+```bash
+git clone https://github.com/isaac-r718/thumbnail-generator.git
+cd thumbnail-generator
+pip install pillow
+```
+
+En Linux, si tkinter no está instalado:
+
+```bash
+sudo apt install python3-tk
+```
+
+## Uso
+
+1. Ejecuta el programa:
+
+```bash
+   python thumbnail.py
+```
+
+2. Escribe el título de la predicación. Usa comas si quieres cortar líneas.
+3. Revisa el nombre del predicador. Puedes elegir un preset del desplegable o escribir otro.
+4. Haz clic en **Generar Miniatura** (o presiona Enter).
+5. En OBS, agrega una fuente **Imagen** apuntando a `obs_output/miniatura_actual.png`.
+
+## Estructura
+
+```text
+thumbnail.py            Aplicación completa: interfaz, composición y exportación
+backgrounds/            Fondos por día (fondo_miercoles.png, fondo_domingo.png)
+fonts/                  Tipografías (Montserrat y Libre Baskerville)
+obs_output/             Miniatura generada (ignorada por Git)
+```
+
+## Fuentes
+
+- **Montserrat** (texto de fecha y predicador) — [Google Fonts](https://fonts.google.com/specimen/Montserrat)
+- **Libre Baskerville** (título) — [Google Fonts](https://fonts.google.com/specimen/Libre+Baskerville)
+
+Ambas tienen licencia SIL Open Font License y pueden usarse libremente.
+
+## Licencia
+
+[MIT](LICENSE) © 2026 Isaac
