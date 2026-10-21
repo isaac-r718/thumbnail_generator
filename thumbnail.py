@@ -30,8 +30,8 @@ MARGEN_LATERAL = 90
 MARGEN_SUPERIOR = 40
 MARGEN_INFERIOR = 40
 
-PREDICADOR_DEFECTO = "Pastor José Luis Ríos Recabarren"
-PREDICADORES = [PREDICADOR_DEFECTO, "Hermano Benjamín Neira"]
+PREDICADOR_DEFECTO = "Inserte nombre predicador por defecto"
+PREDICADORES = [PREDICADOR_DEFECTO, "Inserte nombre predicador 2"]
 
 DIAS_SEMANA = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"]
 MESES = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio",
