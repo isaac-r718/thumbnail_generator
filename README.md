@@ -2,7 +2,7 @@
 
 ### Desarrollo y Metodología
 
-Este proyecto fue diseñado, estructurado y desplegado para resolver una necesidad operativa real. La implementación del código se realizó mediante **desarrollo asistido por IA** (GitHub Copilot), enfocando el esfuerzo principal en el diseño visual, la lógica de composición de la imagen, el ajuste automático de textos y la integración con OBS.
+Este proyecto fue diseñado, estructurado y desplegado para resolver una necesidad operativa real. La implementación del código se realizó mediante desarrollo asistido por IA (GitHub Copilot, Gemini & Claude), enfocando el esfuerzo principal en el diseño visual, la lógica de composición de la imagen, el ajuste automático de textos y la integración con OBS.
 
 > Generador de miniaturas para transmisiones en vivo de YouTube, con diseño automático según el día del servicio y exportación directa a OBS. *(Live-stream thumbnail generator for YouTube, with automatic layout per service day and direct export to OBS.)*
 
